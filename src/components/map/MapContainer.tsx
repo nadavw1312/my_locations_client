@@ -3,7 +3,6 @@ import Map from "./Map";
 import FavoriteLocationForm from "../FavoriteLocationForm";
 import { ILocation } from "../../types/types";
 import axios from "axios";
-import "leaflet/dist/leaflet.css";
 import axiosInstance from "../../services/axios";
 import { useAuth } from "../../hooks/useAuth";
 import LocationsList from "../LocationsList";
