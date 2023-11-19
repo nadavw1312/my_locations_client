@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { useMap } from "react-leaflet";
 
-const MapActions = forwardRef((props, ref) => {
+const MapActions = forwardRef((_props, ref) => {
   const map = useMap();
 
   useImperativeHandle(ref, () => ({

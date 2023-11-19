@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import UserCategories from "./UserCategories";
 import { ICategory } from "../models/Category";
-import axiosInstance from "../services/axios";
 import { IFavoriteLocation } from "../models/FavoriteLocation";
 import favoriteLocationsService from "../services/favoriteLocationsService";
 
@@ -22,7 +21,7 @@ const FavoriteLocationForm = ({ savedFavoriteLocation, handleLocationAdded, onCa
     setFavoriteLocation({ ...savedFavoriteLocation });
   }, [savedFavoriteLocation]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     setFavoriteLocation({
       ...favoriteLocation,
@@ -30,13 +29,13 @@ const FavoriteLocationForm = ({ savedFavoriteLocation, handleLocationAdded, onCa
     });
   };
 
-  const add = async (e) => {
+  const add = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     await favoriteLocationsService.create(favoriteLocation);
     await handleLocationAdded();
   };
 
-  const update = async (e) => {
+  const update = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     await favoriteLocationsService.update({ item: favoriteLocation });
     await handleLocationAdded();

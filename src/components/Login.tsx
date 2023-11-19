@@ -9,7 +9,7 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
       await login(formData.username, formData.password);
