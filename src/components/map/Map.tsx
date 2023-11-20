@@ -14,8 +14,17 @@ interface MapProps {
 
 const Map = ({ handlePositionChange, userLocations, location }: MapProps) => {
   const { currPosition, isInitilaized } = useCurrentLocation();
+  const currLocationRef = useRef<any>();
   const [position, setPosition] = useState<[number, number] | null>(null);
   const mapActionsRef = useRef<any>();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (currLocationRef && isInitilaized) {
+        currLocationRef?.current?.openPopup();
+      }
+    }, 0);
+  }, [isInitilaized]);
 
   useEffect(() => {
     handlePositionChange(position);
@@ -55,8 +64,8 @@ const Map = ({ handlePositionChange, userLocations, location }: MapProps) => {
       />
       <MapActions ref={mapActionsRef} />
       <LocationMarker />
-      <Marker position={currPosition}>
-        <Popup>
+      <Marker position={currPosition} ref={currLocationRef}>
+        <Popup autoClose={false} closeOnClick={false}>
           <div className="flex flex-col justify-center">
             <div>Your current location</div>
             {/* <button onClick={setCurrLocation}>add</button> */}
