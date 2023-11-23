@@ -6,6 +6,8 @@ import Register from "./components/Register";
 import { Authenticated } from "./components/Auth/Authenticated";
 import HomePage from "./pages/HomePage";
 import AuthLayout from "./components/AuthLayout";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -13,43 +15,57 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <AuthConsumer>
-            {(auth) =>
-              !auth.isInitialized ? (
-                <></>
-              ) : (
-                <Routes>
-                  <Route
-                    path="/login"
-                    element={
-                      <PublicRoute>
-                        <AuthLayout>
-                          <Login />
-                        </AuthLayout>
-                      </PublicRoute>
-                    }
-                  />
-                  <Route
-                    path="/register"
-                    element={
-                      <PublicRoute>
-                        <AuthLayout>
-                          <Register />
-                        </AuthLayout>
-                      </PublicRoute>
-                    }
-                  />
+            {(auth) => (
+              <>
+                {!auth.isInitialized ? (
+                  <></>
+                ) : (
+                  <Routes>
+                    <Route
+                      path="/login"
+                      element={
+                        <PublicRoute>
+                          <AuthLayout>
+                            <Login />
+                          </AuthLayout>
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/register"
+                      element={
+                        <PublicRoute>
+                          <AuthLayout>
+                            <Register />
+                          </AuthLayout>
+                        </PublicRoute>
+                      }
+                    />
 
-                  <Route
-                    path="/"
-                    element={
-                      <Authenticated>
-                        <HomePage />
-                      </Authenticated>
-                    }
-                  />
-                </Routes>
-              )
-            }
+                    <Route
+                      path="/"
+                      element={
+                        <Authenticated>
+                          <HomePage />
+                        </Authenticated>
+                      }
+                    />
+                  </Routes>
+                )}
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss={false}
+                  draggable={false}
+                  pauseOnHover={false}
+                  theme="light"
+                />
+              </>
+            )}
           </AuthConsumer>
         </BrowserRouter>
       </AuthProvider>

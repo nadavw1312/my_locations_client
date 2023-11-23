@@ -1,20 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-toastify";
+import { RotatingLines } from "react-loader-spinner";
 
 const Login = () => {
   const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
+      setLoading(true);
       await login(formData.username, formData.password);
-    } catch (error) {
-      alert(error);
+    } catch (e) {
+      if (e instanceof Error) {
+        toast.error(e.message, {});
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,6 +57,11 @@ const Login = () => {
         <Link to="/register" className=" text-blue-700 align-middle self-center text-center">
           Register
         </Link>
+        <div className="h-8 flex items-center justify-center border-t-2">
+          {loading && (
+            <RotatingLines strokeColor="grey" strokeWidth="5" animationDuration="0.75" width="20" visible={true} />
+          )}
+        </div>
       </form>
     </div>
   );

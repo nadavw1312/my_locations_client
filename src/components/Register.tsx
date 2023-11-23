@@ -1,9 +1,12 @@
 import { useState } from "react";
 import userService from "../services/userService";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { RotatingLines } from "react-loader-spinner";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -12,10 +15,15 @@ const Register = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
+      setLoading(true);
       await userService.register(formData.username, formData.password);
       navigate("/login");
-    } catch (error) {
-      alert(error);
+    } catch (e) {
+      if (e instanceof Error) {
+        toast.error(e.message, {});
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,6 +48,7 @@ const Register = () => {
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
         </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
@@ -47,7 +56,16 @@ const Register = () => {
         >
           Register
         </button>
-        <Link to="/login" className=" text-blue-700 align-middle self-center text-center">Login</Link>
+        <Link to="/login" className=" text-blue-700 align-middle self-center text-center">
+          Login
+        </Link>
+        {
+          <div className="h-8 flex items-center justify-center border-t-2">
+            {loading && (
+              <RotatingLines strokeColor="grey" strokeWidth="5" animationDuration="0.75" width="20" visible={true} />
+            )}
+          </div>
+        }
       </form>
     </div>
   );
